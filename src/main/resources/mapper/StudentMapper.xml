@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pms.dao.StudentMapper" >
+  <resultMap id="BaseResultMap" type="com.pms.pojo.Student" >
+    <id column="stu_id" property="stuId" jdbcType="INTEGER" />
+    <result column="stu_no" property="stuNo" jdbcType="VARCHAR" />
+    <result column="stu_name" property="stuName" jdbcType="VARCHAR" />
+    <result column="stu_sex" property="stuSex" jdbcType="CHAR" />
+    <result column="stu_password" property="stuPassword" jdbcType="VARCHAR" />
+    <result column="stu_logintime" property="stuLogintime" jdbcType="VARCHAR" />
+    <result column="major_id" property="majorId" jdbcType="INTEGER" />
+    <result column="stu_email" property="stuEmail" jdbcType="VARCHAR" />
+    <result column="test_flag" property="testFlag" jdbcType="INTEGER" />
+    <result column="stu_comment" property="stuComment" jdbcType="VARCHAR" />
+    <result column="stu_createtime" property="stuCreatetime" jdbcType="TIMESTAMP" />
+    <result column="stu_updatetime" property="stuUpdatetime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    stu_id, stu_no, stu_name, stu_sex, stu_password, stu_logintime, major_id, stu_email, 
+    test_flag, stu_comment, stu_createtime, stu_updatetime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pms.pojo.StudentExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from student
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from student
+    where stu_id = #{stuId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from student
+    where stu_id = #{stuId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pms.pojo.StudentExample" >
+    delete from student
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pms.pojo.Student" >
+    insert into student (stu_id, stu_no, stu_name, 
+      stu_sex, stu_password, stu_logintime, 
+      major_id, stu_email, test_flag, 
+      stu_comment, stu_createtime, stu_updatetime
+      )
+    values (#{stuId,jdbcType=INTEGER}, #{stuNo,jdbcType=VARCHAR}, #{stuName,jdbcType=VARCHAR}, 
+      #{stuSex,jdbcType=CHAR}, #{stuPassword,jdbcType=VARCHAR}, #{stuLogintime,jdbcType=VARCHAR}, 
+      #{majorId,jdbcType=INTEGER}, #{stuEmail,jdbcType=VARCHAR}, #{testFlag,jdbcType=INTEGER}, 
+      #{stuComment,jdbcType=VARCHAR}, #{stuCreatetime,jdbcType=TIMESTAMP}, #{stuUpdatetime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pms.pojo.Student" >
+    insert into student
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="stuId != null" >
+        stu_id,
+      </if>
+      <if test="stuNo != null" >
+        stu_no,
+      </if>
+      <if test="stuName != null" >
+        stu_name,
+      </if>
+      <if test="stuSex != null" >
+        stu_sex,
+      </if>
+      <if test="stuPassword != null" >
+        stu_password,
+      </if>
+      <if test="stuLogintime != null" >
+        stu_logintime,
+      </if>
+      <if test="majorId != null" >
+        major_id,
+      </if>
+      <if test="stuEmail != null" >
+        stu_email,
+      </if>
+      <if test="testFlag != null" >
+        test_flag,
+      </if>
+      <if test="stuComment != null" >
+        stu_comment,
+      </if>
+      <if test="stuCreatetime != null" >
+        stu_createtime,
+      </if>
+      <if test="stuUpdatetime != null" >
+        stu_updatetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="stuId != null" >
+        #{stuId,jdbcType=INTEGER},
+      </if>
+      <if test="stuNo != null" >
+        #{stuNo,jdbcType=VARCHAR},
+      </if>
+      <if test="stuName != null" >
+        #{stuName,jdbcType=VARCHAR},
+      </if>
+      <if test="stuSex != null" >
+        #{stuSex,jdbcType=CHAR},
+      </if>
+      <if test="stuPassword != null" >
+        #{stuPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="stuLogintime != null" >
+        #{stuLogintime,jdbcType=VARCHAR},
+      </if>
+      <if test="majorId != null" >
+        #{majorId,jdbcType=INTEGER},
+      </if>
+      <if test="stuEmail != null" >
+        #{stuEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="testFlag != null" >
+        #{testFlag,jdbcType=INTEGER},
+      </if>
+      <if test="stuComment != null" >
+        #{stuComment,jdbcType=VARCHAR},
+      </if>
+      <if test="stuCreatetime != null" >
+        #{stuCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stuUpdatetime != null" >
+        #{stuUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pms.pojo.StudentExample" resultType="java.lang.Integer" >
+    select count(*) from student
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update student
+    <set >
+      <if test="record.stuId != null" >
+        stu_id = #{record.stuId,jdbcType=INTEGER},
+      </if>
+      <if test="record.stuNo != null" >
+        stu_no = #{record.stuNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.stuName != null" >
+        stu_name = #{record.stuName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.stuSex != null" >
+        stu_sex = #{record.stuSex,jdbcType=CHAR},
+      </if>
+      <if test="record.stuPassword != null" >
+        stu_password = #{record.stuPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="record.stuLogintime != null" >
+        stu_logintime = #{record.stuLogintime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.majorId != null" >
+        major_id = #{record.majorId,jdbcType=INTEGER},
+      </if>
+      <if test="record.stuEmail != null" >
+        stu_email = #{record.stuEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.testFlag != null" >
+        test_flag = #{record.testFlag,jdbcType=INTEGER},
+      </if>
+      <if test="record.stuComment != null" >
+        stu_comment = #{record.stuComment,jdbcType=VARCHAR},
+      </if>
+      <if test="record.stuCreatetime != null" >
+        stu_createtime = #{record.stuCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.stuUpdatetime != null" >
+        stu_updatetime = #{record.stuUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update student
+    set stu_id = #{record.stuId,jdbcType=INTEGER},
+      stu_no = #{record.stuNo,jdbcType=VARCHAR},
+      stu_name = #{record.stuName,jdbcType=VARCHAR},
+      stu_sex = #{record.stuSex,jdbcType=CHAR},
+      stu_password = #{record.stuPassword,jdbcType=VARCHAR},
+      stu_logintime = #{record.stuLogintime,jdbcType=VARCHAR},
+      major_id = #{record.majorId,jdbcType=INTEGER},
+      stu_email = #{record.stuEmail,jdbcType=VARCHAR},
+      test_flag = #{record.testFlag,jdbcType=INTEGER},
+      stu_comment = #{record.stuComment,jdbcType=VARCHAR},
+      stu_createtime = #{record.stuCreatetime,jdbcType=TIMESTAMP},
+      stu_updatetime = #{record.stuUpdatetime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pms.pojo.Student" >
+    update student
+    <set >
+      <if test="stuNo != null" >
+        stu_no = #{stuNo,jdbcType=VARCHAR},
+      </if>
+      <if test="stuName != null" >
+        stu_name = #{stuName,jdbcType=VARCHAR},
+      </if>
+      <if test="stuSex != null" >
+        stu_sex = #{stuSex,jdbcType=CHAR},
+      </if>
+      <if test="stuPassword != null" >
+        stu_password = #{stuPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="stuLogintime != null" >
+        stu_logintime = #{stuLogintime,jdbcType=VARCHAR},
+      </if>
+      <if test="majorId != null" >
+        major_id = #{majorId,jdbcType=INTEGER},
+      </if>
+      <if test="stuEmail != null" >
+        stu_email = #{stuEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="testFlag != null" >
+        test_flag = #{testFlag,jdbcType=INTEGER},
+      </if>
+      <if test="stuComment != null" >
+        stu_comment = #{stuComment,jdbcType=VARCHAR},
+      </if>
+      <if test="stuCreatetime != null" >
+        stu_createtime = #{stuCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stuUpdatetime != null" >
+        stu_updatetime = #{stuUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where stu_id = #{stuId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pms.pojo.Student" >
+    update student
+    set stu_no = #{stuNo,jdbcType=VARCHAR},
+      stu_name = #{stuName,jdbcType=VARCHAR},
+      stu_sex = #{stuSex,jdbcType=CHAR},
+      stu_password = #{stuPassword,jdbcType=VARCHAR},
+      stu_logintime = #{stuLogintime,jdbcType=VARCHAR},
+      major_id = #{majorId,jdbcType=INTEGER},
+      stu_email = #{stuEmail,jdbcType=VARCHAR},
+      test_flag = #{testFlag,jdbcType=INTEGER},
+      stu_comment = #{stuComment,jdbcType=VARCHAR},
+      stu_createtime = #{stuCreatetime,jdbcType=TIMESTAMP},
+      stu_updatetime = #{stuUpdatetime,jdbcType=TIMESTAMP}
+    where stu_id = #{stuId,jdbcType=INTEGER}
+  </update>
+</mapper>

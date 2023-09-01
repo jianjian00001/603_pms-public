@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pms.dao.TestMapper" >
+  <resultMap id="BaseResultMap" type="com.pms.pojo.Test" >
+    <id column="test_id" property="testId" jdbcType="INTEGER" />
+    <result column="course_id" property="courseId" jdbcType="INTEGER" />
+    <result column="stu_id" property="stuId" jdbcType="INTEGER" />
+    <result column="test_score" property="testScore" jdbcType="INTEGER" />
+    <result column="test_date" property="testDate" jdbcType="VARCHAR" />
+    <result column="test_comment" property="testComment" jdbcType="VARCHAR" />
+    <result column="test_createtime" property="testCreatetime" jdbcType="TIMESTAMP" />
+    <result column="test_updatetime" property="testUpdatetime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <select id="findTop3ByStuId" parameterType="Integer" resultMap="BaseResultMap">
+    select * from test where stu_id = #{stuId}
+    order by test_score desc
+    limit 0,3;
+  </select>
+
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    test_id, course_id, stu_id, test_score, test_date, test_comment, test_createtime, 
+    test_updatetime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pms.pojo.TestExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from test
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from test
+    where test_id = #{testId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from test
+    where test_id = #{testId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pms.pojo.TestExample" >
+    delete from test
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pms.pojo.Test" >
+    insert into test (test_id, course_id, stu_id, 
+      test_score, test_date, test_comment, 
+      test_createtime, test_updatetime)
+    values (#{testId,jdbcType=INTEGER}, #{courseId,jdbcType=INTEGER}, #{stuId,jdbcType=INTEGER}, 
+      #{testScore,jdbcType=INTEGER}, #{testDate,jdbcType=VARCHAR}, #{testComment,jdbcType=VARCHAR}, 
+      #{testCreatetime,jdbcType=TIMESTAMP}, #{testUpdatetime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pms.pojo.Test" >
+    insert into test
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="testId != null" >
+        test_id,
+      </if>
+      <if test="courseId != null" >
+        course_id,
+      </if>
+      <if test="stuId != null" >
+        stu_id,
+      </if>
+      <if test="testScore != null" >
+        test_score,
+      </if>
+      <if test="testDate != null" >
+        test_date,
+      </if>
+      <if test="testComment != null" >
+        test_comment,
+      </if>
+      <if test="testCreatetime != null" >
+        test_createtime,
+      </if>
+      <if test="testUpdatetime != null" >
+        test_updatetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="testId != null" >
+        #{testId,jdbcType=INTEGER},
+      </if>
+      <if test="courseId != null" >
+        #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="stuId != null" >
+        #{stuId,jdbcType=INTEGER},
+      </if>
+      <if test="testScore != null" >
+        #{testScore,jdbcType=INTEGER},
+      </if>
+      <if test="testDate != null" >
+        #{testDate,jdbcType=VARCHAR},
+      </if>
+      <if test="testComment != null" >
+        #{testComment,jdbcType=VARCHAR},
+      </if>
+      <if test="testCreatetime != null" >
+        #{testCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="testUpdatetime != null" >
+        #{testUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pms.pojo.TestExample" resultType="java.lang.Integer" >
+    select count(*) from test
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update test
+    <set >
+      <if test="record.testId != null" >
+        test_id = #{record.testId,jdbcType=INTEGER},
+      </if>
+      <if test="record.courseId != null" >
+        course_id = #{record.courseId,jdbcType=INTEGER},
+      </if>
+      <if test="record.stuId != null" >
+        stu_id = #{record.stuId,jdbcType=INTEGER},
+      </if>
+      <if test="record.testScore != null" >
+        test_score = #{record.testScore,jdbcType=INTEGER},
+      </if>
+      <if test="record.testDate != null" >
+        test_date = #{record.testDate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.testComment != null" >
+        test_comment = #{record.testComment,jdbcType=VARCHAR},
+      </if>
+      <if test="record.testCreatetime != null" >
+        test_createtime = #{record.testCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.testUpdatetime != null" >
+        test_updatetime = #{record.testUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update test
+    set test_id = #{record.testId,jdbcType=INTEGER},
+      course_id = #{record.courseId,jdbcType=INTEGER},
+      stu_id = #{record.stuId,jdbcType=INTEGER},
+      test_score = #{record.testScore,jdbcType=INTEGER},
+      test_date = #{record.testDate,jdbcType=VARCHAR},
+      test_comment = #{record.testComment,jdbcType=VARCHAR},
+      test_createtime = #{record.testCreatetime,jdbcType=TIMESTAMP},
+      test_updatetime = #{record.testUpdatetime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pms.pojo.Test" >
+    update test
+    <set >
+      <if test="courseId != null" >
+        course_id = #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="stuId != null" >
+        stu_id = #{stuId,jdbcType=INTEGER},
+      </if>
+      <if test="testScore != null" >
+        test_score = #{testScore,jdbcType=INTEGER},
+      </if>
+      <if test="testDate != null" >
+        test_date = #{testDate,jdbcType=VARCHAR},
+      </if>
+      <if test="testComment != null" >
+        test_comment = #{testComment,jdbcType=VARCHAR},
+      </if>
+      <if test="testCreatetime != null" >
+        test_createtime = #{testCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="testUpdatetime != null" >
+        test_updatetime = #{testUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where test_id = #{testId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pms.pojo.Test" >
+    update test
+    set course_id = #{courseId,jdbcType=INTEGER},
+      stu_id = #{stuId,jdbcType=INTEGER},
+      test_score = #{testScore,jdbcType=INTEGER},
+      test_date = #{testDate,jdbcType=VARCHAR},
+      test_comment = #{testComment,jdbcType=VARCHAR},
+      test_createtime = #{testCreatetime,jdbcType=TIMESTAMP},
+      test_updatetime = #{testUpdatetime,jdbcType=TIMESTAMP}
+    where test_id = #{testId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pms.dao.MultiTableMapper" >
+  <select id="findTestByStuId"  parameterType="Integer" resultType="com.pms.dto.StuAndTestAndCourseAndMajor">
+    SELECT * FROM test t
+    JOIN  student s ON t.stu_id = s.stu_id
+    JOIN course c ON c.course_id = t.course_id
+    JOIN major m ON m.major_id = s.major_id
+    WHERE s.stu_id = #{stuId}
+    ORDER BY t.test_createtime DESC;
+  </select>
+
+  <select id="findTestByCourseId"   parameterType="Integer" resultType="com.pms.dto.StuAndTestAndCourseAndMajor">
+    SELECT * FROM test t
+    JOIN  student s ON t.stu_id = s.stu_id
+    JOIN course c ON c.course_id = t.course_id
+    JOIN major m ON m.major_id = s.major_id
+    where c.course_id = #{courseId}
+    order by t.test_score desc
+  </select>
+
+  <select id="findTestTop3ByStuId"  parameterType="Integer" resultType="com.pms.dto.StuAndTestAndCourseAndMajor">
+    SELECT * FROM test t
+    JOIN  student s ON t.stu_id = s.stu_id
+    JOIN course c ON c.course_id = t.course_id
+    JOIN major m ON m.major_id = s.major_id
+    where s.stu_id = #{stuId}
+    order by t.test_score desc
+    limit 0,3;
+  </select>
+</mapper>

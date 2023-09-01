@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pms.dao.PaperMapper" >
+  <resultMap id="BaseResultMap" type="com.pms.pojo.Paper" >
+    <id column="paper_id" property="paperId" jdbcType="INTEGER" />
+    <result column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="stu_id" property="stuId" jdbcType="INTEGER" />
+    <result column="student_path" property="studentPath" jdbcType="VARCHAR" />
+    <result column="paper_flag" property="paperFlag" jdbcType="INTEGER" />
+    <result column="student_uploadtime" property="studentUploadtime" jdbcType="VARCHAR" />
+    <result column="teacher_uploadtime" property="teacherUploadtime" jdbcType="VARCHAR" />
+    <result column="teacher_id" property="teacherId" jdbcType="INTEGER" />
+    <result column="teacher_path" property="teacherPath" jdbcType="VARCHAR" />
+    <result column="paper_comment" property="paperComment" jdbcType="VARCHAR" />
+    <result column="paper_createtime" property="paperCreatetime" jdbcType="TIMESTAMP" />
+    <result column="paper_updatetime" property="paperUpdatetime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    paper_id, project_id, project_name, stu_id, student_path, paper_flag, student_uploadtime, 
+    teacher_uploadtime, teacher_id, teacher_path, paper_comment, paper_createtime, paper_updatetime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pms.pojo.PaperExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from paper
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from paper
+    where paper_id = #{paperId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from paper
+    where paper_id = #{paperId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pms.pojo.PaperExample" >
+    delete from paper
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pms.pojo.Paper" >
+    insert into paper (paper_id, project_id, project_name, 
+      stu_id, student_path, paper_flag, 
+      student_uploadtime, teacher_uploadtime, teacher_id, 
+      teacher_path, paper_comment, paper_createtime, 
+      paper_updatetime)
+    values (#{paperId,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{projectName,jdbcType=VARCHAR}, 
+      #{stuId,jdbcType=INTEGER}, #{studentPath,jdbcType=VARCHAR}, #{paperFlag,jdbcType=INTEGER}, 
+      #{studentUploadtime,jdbcType=VARCHAR}, #{teacherUploadtime,jdbcType=VARCHAR}, #{teacherId,jdbcType=INTEGER}, 
+      #{teacherPath,jdbcType=VARCHAR}, #{paperComment,jdbcType=VARCHAR}, #{paperCreatetime,jdbcType=TIMESTAMP}, 
+      #{paperUpdatetime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pms.pojo.Paper" >
+    insert into paper
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="paperId != null" >
+        paper_id,
+      </if>
+      <if test="projectId != null" >
+        project_id,
+      </if>
+      <if test="projectName != null" >
+        project_name,
+      </if>
+      <if test="stuId != null" >
+        stu_id,
+      </if>
+      <if test="studentPath != null" >
+        student_path,
+      </if>
+      <if test="paperFlag != null" >
+        paper_flag,
+      </if>
+      <if test="studentUploadtime != null" >
+        student_uploadtime,
+      </if>
+      <if test="teacherUploadtime != null" >
+        teacher_uploadtime,
+      </if>
+      <if test="teacherId != null" >
+        teacher_id,
+      </if>
+      <if test="teacherPath != null" >
+        teacher_path,
+      </if>
+      <if test="paperComment != null" >
+        paper_comment,
+      </if>
+      <if test="paperCreatetime != null" >
+        paper_createtime,
+      </if>
+      <if test="paperUpdatetime != null" >
+        paper_updatetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="paperId != null" >
+        #{paperId,jdbcType=INTEGER},
+      </if>
+      <if test="projectId != null" >
+        #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="projectName != null" >
+        #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="stuId != null" >
+        #{stuId,jdbcType=INTEGER},
+      </if>
+      <if test="studentPath != null" >
+        #{studentPath,jdbcType=VARCHAR},
+      </if>
+      <if test="paperFlag != null" >
+        #{paperFlag,jdbcType=INTEGER},
+      </if>
+      <if test="studentUploadtime != null" >
+        #{studentUploadtime,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherUploadtime != null" >
+        #{teacherUploadtime,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherId != null" >
+        #{teacherId,jdbcType=INTEGER},
+      </if>
+      <if test="teacherPath != null" >
+        #{teacherPath,jdbcType=VARCHAR},
+      </if>
+      <if test="paperComment != null" >
+        #{paperComment,jdbcType=VARCHAR},
+      </if>
+      <if test="paperCreatetime != null" >
+        #{paperCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="paperUpdatetime != null" >
+        #{paperUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pms.pojo.PaperExample" resultType="java.lang.Integer" >
+    select count(*) from paper
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update paper
+    <set >
+      <if test="record.paperId != null" >
+        paper_id = #{record.paperId,jdbcType=INTEGER},
+      </if>
+      <if test="record.projectId != null" >
+        project_id = #{record.projectId,jdbcType=INTEGER},
+      </if>
+      <if test="record.projectName != null" >
+        project_name = #{record.projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.stuId != null" >
+        stu_id = #{record.stuId,jdbcType=INTEGER},
+      </if>
+      <if test="record.studentPath != null" >
+        student_path = #{record.studentPath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paperFlag != null" >
+        paper_flag = #{record.paperFlag,jdbcType=INTEGER},
+      </if>
+      <if test="record.studentUploadtime != null" >
+        student_uploadtime = #{record.studentUploadtime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.teacherUploadtime != null" >
+        teacher_uploadtime = #{record.teacherUploadtime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.teacherId != null" >
+        teacher_id = #{record.teacherId,jdbcType=INTEGER},
+      </if>
+      <if test="record.teacherPath != null" >
+        teacher_path = #{record.teacherPath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paperComment != null" >
+        paper_comment = #{record.paperComment,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paperCreatetime != null" >
+        paper_createtime = #{record.paperCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.paperUpdatetime != null" >
+        paper_updatetime = #{record.paperUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update paper
+    set paper_id = #{record.paperId,jdbcType=INTEGER},
+      project_id = #{record.projectId,jdbcType=INTEGER},
+      project_name = #{record.projectName,jdbcType=VARCHAR},
+      stu_id = #{record.stuId,jdbcType=INTEGER},
+      student_path = #{record.studentPath,jdbcType=VARCHAR},
+      paper_flag = #{record.paperFlag,jdbcType=INTEGER},
+      student_uploadtime = #{record.studentUploadtime,jdbcType=VARCHAR},
+      teacher_uploadtime = #{record.teacherUploadtime,jdbcType=VARCHAR},
+      teacher_id = #{record.teacherId,jdbcType=INTEGER},
+      teacher_path = #{record.teacherPath,jdbcType=VARCHAR},
+      paper_comment = #{record.paperComment,jdbcType=VARCHAR},
+      paper_createtime = #{record.paperCreatetime,jdbcType=TIMESTAMP},
+      paper_updatetime = #{record.paperUpdatetime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pms.pojo.Paper" >
+    update paper
+    <set >
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="projectName != null" >
+        project_name = #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="stuId != null" >
+        stu_id = #{stuId,jdbcType=INTEGER},
+      </if>
+      <if test="studentPath != null" >
+        student_path = #{studentPath,jdbcType=VARCHAR},
+      </if>
+      <if test="paperFlag != null" >
+        paper_flag = #{paperFlag,jdbcType=INTEGER},
+      </if>
+      <if test="studentUploadtime != null" >
+        student_uploadtime = #{studentUploadtime,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherUploadtime != null" >
+        teacher_uploadtime = #{teacherUploadtime,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherId != null" >
+        teacher_id = #{teacherId,jdbcType=INTEGER},
+      </if>
+      <if test="teacherPath != null" >
+        teacher_path = #{teacherPath,jdbcType=VARCHAR},
+      </if>
+      <if test="paperComment != null" >
+        paper_comment = #{paperComment,jdbcType=VARCHAR},
+      </if>
+      <if test="paperCreatetime != null" >
+        paper_createtime = #{paperCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="paperUpdatetime != null" >
+        paper_updatetime = #{paperUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where paper_id = #{paperId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pms.pojo.Paper" >
+    update paper
+    set project_id = #{projectId,jdbcType=INTEGER},
+      project_name = #{projectName,jdbcType=VARCHAR},
+      stu_id = #{stuId,jdbcType=INTEGER},
+      student_path = #{studentPath,jdbcType=VARCHAR},
+      paper_flag = #{paperFlag,jdbcType=INTEGER},
+      student_uploadtime = #{studentUploadtime,jdbcType=VARCHAR},
+      teacher_uploadtime = #{teacherUploadtime,jdbcType=VARCHAR},
+      teacher_id = #{teacherId,jdbcType=INTEGER},
+      teacher_path = #{teacherPath,jdbcType=VARCHAR},
+      paper_comment = #{paperComment,jdbcType=VARCHAR},
+      paper_createtime = #{paperCreatetime,jdbcType=TIMESTAMP},
+      paper_updatetime = #{paperUpdatetime,jdbcType=TIMESTAMP}
+    where paper_id = #{paperId,jdbcType=INTEGER}
+  </update>
+</mapper>

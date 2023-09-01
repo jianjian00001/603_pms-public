@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pms.dao.TeacherMapper" >
+  <resultMap id="BaseResultMap" type="com.pms.pojo.Teacher" >
+    <id column="teacher_id" property="teacherId" jdbcType="INTEGER" />
+    <result column="teacher_no" property="teacherNo" jdbcType="VARCHAR" />
+    <result column="teacher_password" property="teacherPassword" jdbcType="VARCHAR" />
+    <result column="course_id" property="courseId" jdbcType="INTEGER" />
+    <result column="teacher_name" property="teacherName" jdbcType="VARCHAR" />
+    <result column="teacher_sex" property="teacherSex" jdbcType="CHAR" />
+    <result column="limit_count" property="limitCount" jdbcType="INTEGER" />
+    <result column="teacher_email" property="teacherEmail" jdbcType="VARCHAR" />
+    <result column="teacher_logintime" property="teacherLogintime" jdbcType="VARCHAR" />
+    <result column="teacher_comment" property="teacherComment" jdbcType="VARCHAR" />
+    <result column="teacher_createtime" property="teacherCreatetime" jdbcType="TIMESTAMP" />
+    <result column="teacher_updatetime" property="teacherUpdatetime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <resultMap id="fullMap" type="com.pms.pojo.Teacher" >
+    <id column="teacher_id" property="teacherId" jdbcType="INTEGER" />
+    <result column="teacher_no" property="teacherNo" jdbcType="VARCHAR" />
+    <result column="teacher_password" property="teacherPassword" jdbcType="VARCHAR" />
+    <result column="teacher_name" property="teacherName" jdbcType="VARCHAR" />
+    <result column="teacher_sex" property="teacherSex" jdbcType="CHAR" />
+    <result column="limit_count" property="limitCount" jdbcType="INTEGER" />
+    <result column="teacher_email" property="teacherEmail" jdbcType="VARCHAR" />
+    <result column="teacher_logintime" property="teacherLogintime" jdbcType="VARCHAR" />
+    <result column="teacher_comment" property="teacherComment" jdbcType="VARCHAR" />
+    <result column="teacher_createtime" property="teacherCreatetime" jdbcType="TIMESTAMP" />
+    <result column="teacher_updatetime" property="teacherUpdatetime" jdbcType="TIMESTAMP" />
+    <association property="course" javaType="com.pms.pojo.Course">
+      <id column="course_id" property="courseId"/>
+      <result column="major_id" property="majorId"/>
+      <result column="course_name" property="courseName"/>
+      <result column="course_comment" property="courseComment"/>
+      <result column="course_createtime" property="courseCreatetime"/>
+      <result column="course_updatetime" property="courseUpdatetime"/>
+    </association>
+  </resultMap>
+
+
+
+  <select id="findByMajorId" resultMap="fullMap">
+  SELECT teacher_id,teacher_no,c.course_id,teacher_name,teacher_sex,limit_count,teacher_email,teacher_logintime,
+  teacher_comment,teacher_createtime,teacher_updatetime,course_name,major_id,course_comment,course_createtime,course_updatetime
+  FROM teacher t
+  JOIN course c ON t.course_id = c.course_id
+  WHERE   major_id = #{majorId};
+  </select>
+
+
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    teacher_id, teacher_no, teacher_password, course_id, teacher_name, teacher_sex, limit_count, 
+    teacher_email, teacher_logintime, teacher_comment, teacher_createtime, teacher_updatetime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pms.pojo.TeacherExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from teacher
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from teacher
+    where teacher_id = #{teacherId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from teacher
+    where teacher_id = #{teacherId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pms.pojo.TeacherExample" >
+    delete from teacher
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pms.pojo.Teacher" >
+    insert into teacher (teacher_id, teacher_no, teacher_password, 
+      course_id, teacher_name, teacher_sex, 
+      limit_count, teacher_email, teacher_logintime, 
+      teacher_comment, teacher_createtime, teacher_updatetime
+      )
+    values (#{teacherId,jdbcType=INTEGER}, #{teacherNo,jdbcType=VARCHAR}, #{teacherPassword,jdbcType=VARCHAR}, 
+      #{courseId,jdbcType=INTEGER}, #{teacherName,jdbcType=VARCHAR}, #{teacherSex,jdbcType=CHAR}, 
+      #{limitCount,jdbcType=INTEGER}, #{teacherEmail,jdbcType=VARCHAR}, #{teacherLogintime,jdbcType=VARCHAR}, 
+      #{teacherComment,jdbcType=VARCHAR}, #{teacherCreatetime,jdbcType=TIMESTAMP}, #{teacherUpdatetime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pms.pojo.Teacher" >
+    insert into teacher
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="teacherId != null" >
+        teacher_id,
+      </if>
+      <if test="teacherNo != null" >
+        teacher_no,
+      </if>
+      <if test="teacherPassword != null" >
+        teacher_password,
+      </if>
+      <if test="courseId != null" >
+        course_id,
+      </if>
+      <if test="teacherName != null" >
+        teacher_name,
+      </if>
+      <if test="teacherSex != null" >
+        teacher_sex,
+      </if>
+      <if test="limitCount != null" >
+        limit_count,
+      </if>
+      <if test="teacherEmail != null" >
+        teacher_email,
+      </if>
+      <if test="teacherLogintime != null" >
+        teacher_logintime,
+      </if>
+      <if test="teacherComment != null" >
+        teacher_comment,
+      </if>
+      <if test="teacherCreatetime != null" >
+        teacher_createtime,
+      </if>
+      <if test="teacherUpdatetime != null" >
+        teacher_updatetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="teacherId != null" >
+        #{teacherId,jdbcType=INTEGER},
+      </if>
+      <if test="teacherNo != null" >
+        #{teacherNo,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherPassword != null" >
+        #{teacherPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="courseId != null" >
+        #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="teacherName != null" >
+        #{teacherName,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherSex != null" >
+        #{teacherSex,jdbcType=CHAR},
+      </if>
+      <if test="limitCount != null" >
+        #{limitCount,jdbcType=INTEGER},
+      </if>
+      <if test="teacherEmail != null" >
+        #{teacherEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherLogintime != null" >
+        #{teacherLogintime,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherComment != null" >
+        #{teacherComment,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherCreatetime != null" >
+        #{teacherCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="teacherUpdatetime != null" >
+        #{teacherUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pms.pojo.TeacherExample" resultType="java.lang.Integer" >
+    select count(*) from teacher
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update teacher
+    <set >
+      <if test="record.teacherId != null" >
+        teacher_id = #{record.teacherId,jdbcType=INTEGER},
+      </if>
+      <if test="record.teacherNo != null" >
+        teacher_no = #{record.teacherNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.teacherPassword != null" >
+        teacher_password = #{record.teacherPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="record.courseId != null" >
+        course_id = #{record.courseId,jdbcType=INTEGER},
+      </if>
+      <if test="record.teacherName != null" >
+        teacher_name = #{record.teacherName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.teacherSex != null" >
+        teacher_sex = #{record.teacherSex,jdbcType=CHAR},
+      </if>
+      <if test="record.limitCount != null" >
+        limit_count = #{record.limitCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.teacherEmail != null" >
+        teacher_email = #{record.teacherEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.teacherLogintime != null" >
+        teacher_logintime = #{record.teacherLogintime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.teacherComment != null" >
+        teacher_comment = #{record.teacherComment,jdbcType=VARCHAR},
+      </if>
+      <if test="record.teacherCreatetime != null" >
+        teacher_createtime = #{record.teacherCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.teacherUpdatetime != null" >
+        teacher_updatetime = #{record.teacherUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update teacher
+    set teacher_id = #{record.teacherId,jdbcType=INTEGER},
+    teacher_no = #{record.teacherNo,jdbcType=VARCHAR},
+    teacher_password = #{record.teacherPassword,jdbcType=VARCHAR},
+    course_id = #{record.courseId,jdbcType=INTEGER},
+    teacher_name = #{record.teacherName,jdbcType=VARCHAR},
+    teacher_sex = #{record.teacherSex,jdbcType=CHAR},
+    limit_count = #{record.limitCount,jdbcType=INTEGER},
+    teacher_email = #{record.teacherEmail,jdbcType=VARCHAR},
+    teacher_logintime = #{record.teacherLogintime,jdbcType=VARCHAR},
+    teacher_comment = #{record.teacherComment,jdbcType=VARCHAR},
+    teacher_createtime = #{record.teacherCreatetime,jdbcType=TIMESTAMP},
+    teacher_updatetime = #{record.teacherUpdatetime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pms.pojo.Teacher" >
+    update teacher
+    <set >
+      <if test="teacherNo != null" >
+        teacher_no = #{teacherNo,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherPassword != null" >
+        teacher_password = #{teacherPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="courseId != null" >
+        course_id = #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="teacherName != null" >
+        teacher_name = #{teacherName,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherSex != null" >
+        teacher_sex = #{teacherSex,jdbcType=CHAR},
+      </if>
+      <if test="limitCount != null" >
+        limit_count = #{limitCount,jdbcType=INTEGER},
+      </if>
+      <if test="teacherEmail != null" >
+        teacher_email = #{teacherEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherLogintime != null" >
+        teacher_logintime = #{teacherLogintime,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherComment != null" >
+        teacher_comment = #{teacherComment,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherCreatetime != null" >
+        teacher_createtime = #{teacherCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="teacherUpdatetime != null" >
+        teacher_updatetime = #{teacherUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where teacher_id = #{teacherId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pms.pojo.Teacher" >
+    update teacher
+    set teacher_no = #{teacherNo,jdbcType=VARCHAR},
+    teacher_password = #{teacherPassword,jdbcType=VARCHAR},
+    course_id = #{courseId,jdbcType=INTEGER},
+    teacher_name = #{teacherName,jdbcType=VARCHAR},
+    teacher_sex = #{teacherSex,jdbcType=CHAR},
+    limit_count = #{limitCount,jdbcType=INTEGER},
+    teacher_email = #{teacherEmail,jdbcType=VARCHAR},
+    teacher_logintime = #{teacherLogintime,jdbcType=VARCHAR},
+    teacher_comment = #{teacherComment,jdbcType=VARCHAR},
+    teacher_createtime = #{teacherCreatetime,jdbcType=TIMESTAMP},
+    teacher_updatetime = #{teacherUpdatetime,jdbcType=TIMESTAMP}
+    where teacher_id = #{teacherId,jdbcType=INTEGER}
+  </update>
+</mapper>

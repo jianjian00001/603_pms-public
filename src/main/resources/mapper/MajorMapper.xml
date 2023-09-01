@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pms.dao.MajorMapper" >
+  <resultMap id="BaseResultMap" type="com.pms.pojo.Major" >
+    <id column="major_id" property="majorId" jdbcType="INTEGER" />
+    <result column="major_name" property="majorName" jdbcType="VARCHAR" />
+    <result column="college_id" property="collegeId" jdbcType="INTEGER" />
+    <result column="major_comment" property="majorComment" jdbcType="VARCHAR" />
+    <result column="major_createtime" property="majorCreatetime" jdbcType="TIMESTAMP" />
+    <result column="major_updatetime" property="majorUpdatetime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    major_id, major_name, college_id, major_comment, major_createtime, major_updatetime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pms.pojo.MajorExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from major
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from major
+    where major_id = #{majorId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from major
+    where major_id = #{majorId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pms.pojo.MajorExample" >
+    delete from major
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pms.pojo.Major" >
+    insert into major (major_id, major_name, college_id, 
+      major_comment, major_createtime, major_updatetime
+      )
+    values (#{majorId,jdbcType=INTEGER}, #{majorName,jdbcType=VARCHAR}, #{collegeId,jdbcType=INTEGER}, 
+      #{majorComment,jdbcType=VARCHAR}, #{majorCreatetime,jdbcType=TIMESTAMP}, #{majorUpdatetime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pms.pojo.Major" >
+    insert into major
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="majorId != null" >
+        major_id,
+      </if>
+      <if test="majorName != null" >
+        major_name,
+      </if>
+      <if test="collegeId != null" >
+        college_id,
+      </if>
+      <if test="majorComment != null" >
+        major_comment,
+      </if>
+      <if test="majorCreatetime != null" >
+        major_createtime,
+      </if>
+      <if test="majorUpdatetime != null" >
+        major_updatetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="majorId != null" >
+        #{majorId,jdbcType=INTEGER},
+      </if>
+      <if test="majorName != null" >
+        #{majorName,jdbcType=VARCHAR},
+      </if>
+      <if test="collegeId != null" >
+        #{collegeId,jdbcType=INTEGER},
+      </if>
+      <if test="majorComment != null" >
+        #{majorComment,jdbcType=VARCHAR},
+      </if>
+      <if test="majorCreatetime != null" >
+        #{majorCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="majorUpdatetime != null" >
+        #{majorUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pms.pojo.MajorExample" resultType="java.lang.Integer" >
+    select count(*) from major
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update major
+    <set >
+      <if test="record.majorId != null" >
+        major_id = #{record.majorId,jdbcType=INTEGER},
+      </if>
+      <if test="record.majorName != null" >
+        major_name = #{record.majorName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.collegeId != null" >
+        college_id = #{record.collegeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.majorComment != null" >
+        major_comment = #{record.majorComment,jdbcType=VARCHAR},
+      </if>
+      <if test="record.majorCreatetime != null" >
+        major_createtime = #{record.majorCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.majorUpdatetime != null" >
+        major_updatetime = #{record.majorUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update major
+    set major_id = #{record.majorId,jdbcType=INTEGER},
+      major_name = #{record.majorName,jdbcType=VARCHAR},
+      college_id = #{record.collegeId,jdbcType=INTEGER},
+      major_comment = #{record.majorComment,jdbcType=VARCHAR},
+      major_createtime = #{record.majorCreatetime,jdbcType=TIMESTAMP},
+      major_updatetime = #{record.majorUpdatetime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pms.pojo.Major" >
+    update major
+    <set >
+      <if test="majorName != null" >
+        major_name = #{majorName,jdbcType=VARCHAR},
+      </if>
+      <if test="collegeId != null" >
+        college_id = #{collegeId,jdbcType=INTEGER},
+      </if>
+      <if test="majorComment != null" >
+        major_comment = #{majorComment,jdbcType=VARCHAR},
+      </if>
+      <if test="majorCreatetime != null" >
+        major_createtime = #{majorCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="majorUpdatetime != null" >
+        major_updatetime = #{majorUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where major_id = #{majorId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pms.pojo.Major" >
+    update major
+    set major_name = #{majorName,jdbcType=VARCHAR},
+      college_id = #{collegeId,jdbcType=INTEGER},
+      major_comment = #{majorComment,jdbcType=VARCHAR},
+      major_createtime = #{majorCreatetime,jdbcType=TIMESTAMP},
+      major_updatetime = #{majorUpdatetime,jdbcType=TIMESTAMP}
+    where major_id = #{majorId,jdbcType=INTEGER}
+  </update>
+</mapper>

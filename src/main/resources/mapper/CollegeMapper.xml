@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pms.dao.CollegeMapper" >
+  <resultMap id="BaseResultMap" type="com.pms.pojo.College" >
+    <id column="college_id" property="collegeId" jdbcType="INTEGER" />
+    <result column="college_name" property="collegeName" jdbcType="VARCHAR" />
+    <result column="college_comment" property="collegeComment" jdbcType="VARCHAR" />
+    <result column="college_createtime" property="collegeCreatetime" jdbcType="TIMESTAMP" />
+    <result column="college_updatetime" property="collegeUpdatetime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    college_id, college_name, college_comment, college_createtime, college_updatetime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pms.pojo.CollegeExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from college
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from college
+    where college_id = #{collegeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from college
+    where college_id = #{collegeId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pms.pojo.CollegeExample" >
+    delete from college
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pms.pojo.College" >
+    insert into college (college_id, college_name, college_comment, 
+      college_createtime, college_updatetime
+      )
+    values (#{collegeId,jdbcType=INTEGER}, #{collegeName,jdbcType=VARCHAR}, #{collegeComment,jdbcType=VARCHAR}, 
+      #{collegeCreatetime,jdbcType=TIMESTAMP}, #{collegeUpdatetime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pms.pojo.College" >
+    insert into college
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="collegeId != null" >
+        college_id,
+      </if>
+      <if test="collegeName != null" >
+        college_name,
+      </if>
+      <if test="collegeComment != null" >
+        college_comment,
+      </if>
+      <if test="collegeCreatetime != null" >
+        college_createtime,
+      </if>
+      <if test="collegeUpdatetime != null" >
+        college_updatetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="collegeId != null" >
+        #{collegeId,jdbcType=INTEGER},
+      </if>
+      <if test="collegeName != null" >
+        #{collegeName,jdbcType=VARCHAR},
+      </if>
+      <if test="collegeComment != null" >
+        #{collegeComment,jdbcType=VARCHAR},
+      </if>
+      <if test="collegeCreatetime != null" >
+        #{collegeCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="collegeUpdatetime != null" >
+        #{collegeUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pms.pojo.CollegeExample" resultType="java.lang.Integer" >
+    select count(*) from college
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update college
+    <set >
+      <if test="record.collegeId != null" >
+        college_id = #{record.collegeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.collegeName != null" >
+        college_name = #{record.collegeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.collegeComment != null" >
+        college_comment = #{record.collegeComment,jdbcType=VARCHAR},
+      </if>
+      <if test="record.collegeCreatetime != null" >
+        college_createtime = #{record.collegeCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.collegeUpdatetime != null" >
+        college_updatetime = #{record.collegeUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update college
+    set college_id = #{record.collegeId,jdbcType=INTEGER},
+      college_name = #{record.collegeName,jdbcType=VARCHAR},
+      college_comment = #{record.collegeComment,jdbcType=VARCHAR},
+      college_createtime = #{record.collegeCreatetime,jdbcType=TIMESTAMP},
+      college_updatetime = #{record.collegeUpdatetime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pms.pojo.College" >
+    update college
+    <set >
+      <if test="collegeName != null" >
+        college_name = #{collegeName,jdbcType=VARCHAR},
+      </if>
+      <if test="collegeComment != null" >
+        college_comment = #{collegeComment,jdbcType=VARCHAR},
+      </if>
+      <if test="collegeCreatetime != null" >
+        college_createtime = #{collegeCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="collegeUpdatetime != null" >
+        college_updatetime = #{collegeUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where college_id = #{collegeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pms.pojo.College" >
+    update college
+    set college_name = #{collegeName,jdbcType=VARCHAR},
+      college_comment = #{collegeComment,jdbcType=VARCHAR},
+      college_createtime = #{collegeCreatetime,jdbcType=TIMESTAMP},
+      college_updatetime = #{collegeUpdatetime,jdbcType=TIMESTAMP}
+    where college_id = #{collegeId,jdbcType=INTEGER}
+  </update>
+</mapper>

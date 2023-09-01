@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop
+         http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <context:component-scan base-package="com.pms"/>
+    <context:property-placeholder location="classpath:*.properties"/>
+    <!--dao-->
+    <bean name = "dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="jdbcUrl" value="${jdbc.jdbcUrl}" />
+        <property name="driverClass" value="${jdbc.driverClass}"/>
+        <property name="user" value="${jdbc.user}"/>
+        <property name="password" value="${jdbc.password}"/>
+
+        <property name="checkoutTimeout" value="5000"/>
+        <property name="acquireRetryAttempts" value="3"/>
+        <property name="maxPoolSize" value="30"/>
+        <property name="minPoolSize" value="10"/>
+    </bean>
+
+    <bean class="org.mybatis.spring.SqlSessionFactoryBean" name="sqlSessionFactory">
+        <property name="dataSource" ref="dataSource" />
+        <property name="typeAliasesPackage" value="com.pms.pojo"/>
+        <property name="mapperLocations" value="classpath:mapper/*.xml"/>
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.pms.dao"/>
+    </bean>
+
+    <!--事务-->
+    <bean name="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!--注册事务驱动-->
+    <tx:annotation-driven transaction-manager="transactionManager" />
+    <!--开启切面编程 自动代理-->
+    <aop:aspectj-autoproxy  proxy-target-class="true"/>
+
+    <!--其他-->
+
+    <!--&lt;!&ndash;quartz 任务调度&ndash;&gt;
+    &lt;!&ndash; 定义一个任务类 &ndash;&gt;
+    <bean id="gradeTask" class="com.pms.comment.task.GradeTask"></bean>
+    &lt;!&ndash; jobDetail &ndash;&gt;
+    <bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="gradeTask"></property>
+        <property name="targetMethod" value="reState"></property>
+        <property name="concurrent" value="false" />&lt;!&ndash; 作业不并发调度  &ndash;&gt;
+    </bean>
+
+    &lt;!&ndash; 定义trigger 触发器 &ndash;&gt;
+    <bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="jobDetail"></property>
+        <property name="cronExpression" value="59 59 23 * * ? *"></property>
+    </bean>
+
+    <bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="cronTrigger"/>
+            </list>
+        </property>
+    </bean>-->
+
+
+
+</beans>

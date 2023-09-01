@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pms.dao.PreselectionMapper" >
+  <resultMap id="BaseResultMap" type="com.pms.pojo.Preselection" >
+    <id column="pre_id" property="preId" jdbcType="INTEGER" />
+    <result column="stu_id" property="stuId" jdbcType="INTEGER" />
+    <result column="teacher_id" property="teacherId" jdbcType="INTEGER" />
+    <result column="pre_flag" property="preFlag" jdbcType="INTEGER" />
+    <result column="pre_pass_flag" property="prePassFlag" jdbcType="INTEGER" />
+    <result column="reject_reason" property="rejectReason" jdbcType="VARCHAR" />
+    <result column="pre_comment" property="preComment" jdbcType="VARCHAR" />
+    <result column="pre_createtime" property="preCreatetime" jdbcType="TIMESTAMP" />
+    <result column="pre_updatetime" property="preUpdatetime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    pre_id, stu_id, teacher_id, pre_flag, pre_pass_flag, reject_reason, pre_comment, 
+    pre_createtime, pre_updatetime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pms.pojo.PreselectionExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from preselection
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from preselection
+    where pre_id = #{preId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from preselection
+    where pre_id = #{preId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pms.pojo.PreselectionExample" >
+    delete from preselection
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pms.pojo.Preselection" >
+    insert into preselection (pre_id, stu_id, teacher_id, 
+      pre_flag, pre_pass_flag, reject_reason, 
+      pre_comment, pre_createtime, pre_updatetime
+      )
+    values (#{preId,jdbcType=INTEGER}, #{stuId,jdbcType=INTEGER}, #{teacherId,jdbcType=INTEGER}, 
+      #{preFlag,jdbcType=INTEGER}, #{prePassFlag,jdbcType=INTEGER}, #{rejectReason,jdbcType=VARCHAR}, 
+      #{preComment,jdbcType=VARCHAR}, #{preCreatetime,jdbcType=TIMESTAMP}, #{preUpdatetime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pms.pojo.Preselection" >
+    insert into preselection
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="preId != null" >
+        pre_id,
+      </if>
+      <if test="stuId != null" >
+        stu_id,
+      </if>
+      <if test="teacherId != null" >
+        teacher_id,
+      </if>
+      <if test="preFlag != null" >
+        pre_flag,
+      </if>
+      <if test="prePassFlag != null" >
+        pre_pass_flag,
+      </if>
+      <if test="rejectReason != null" >
+        reject_reason,
+      </if>
+      <if test="preComment != null" >
+        pre_comment,
+      </if>
+      <if test="preCreatetime != null" >
+        pre_createtime,
+      </if>
+      <if test="preUpdatetime != null" >
+        pre_updatetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="preId != null" >
+        #{preId,jdbcType=INTEGER},
+      </if>
+      <if test="stuId != null" >
+        #{stuId,jdbcType=INTEGER},
+      </if>
+      <if test="teacherId != null" >
+        #{teacherId,jdbcType=INTEGER},
+      </if>
+      <if test="preFlag != null" >
+        #{preFlag,jdbcType=INTEGER},
+      </if>
+      <if test="prePassFlag != null" >
+        #{prePassFlag,jdbcType=INTEGER},
+      </if>
+      <if test="rejectReason != null" >
+        #{rejectReason,jdbcType=VARCHAR},
+      </if>
+      <if test="preComment != null" >
+        #{preComment,jdbcType=VARCHAR},
+      </if>
+      <if test="preCreatetime != null" >
+        #{preCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="preUpdatetime != null" >
+        #{preUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pms.pojo.PreselectionExample" resultType="java.lang.Integer" >
+    select count(*) from preselection
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update preselection
+    <set >
+      <if test="record.preId != null" >
+        pre_id = #{record.preId,jdbcType=INTEGER},
+      </if>
+      <if test="record.stuId != null" >
+        stu_id = #{record.stuId,jdbcType=INTEGER},
+      </if>
+      <if test="record.teacherId != null" >
+        teacher_id = #{record.teacherId,jdbcType=INTEGER},
+      </if>
+      <if test="record.preFlag != null" >
+        pre_flag = #{record.preFlag,jdbcType=INTEGER},
+      </if>
+      <if test="record.prePassFlag != null" >
+        pre_pass_flag = #{record.prePassFlag,jdbcType=INTEGER},
+      </if>
+      <if test="record.rejectReason != null" >
+        reject_reason = #{record.rejectReason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.preComment != null" >
+        pre_comment = #{record.preComment,jdbcType=VARCHAR},
+      </if>
+      <if test="record.preCreatetime != null" >
+        pre_createtime = #{record.preCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.preUpdatetime != null" >
+        pre_updatetime = #{record.preUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update preselection
+    set pre_id = #{record.preId,jdbcType=INTEGER},
+      stu_id = #{record.stuId,jdbcType=INTEGER},
+      teacher_id = #{record.teacherId,jdbcType=INTEGER},
+      pre_flag = #{record.preFlag,jdbcType=INTEGER},
+      pre_pass_flag = #{record.prePassFlag,jdbcType=INTEGER},
+      reject_reason = #{record.rejectReason,jdbcType=VARCHAR},
+      pre_comment = #{record.preComment,jdbcType=VARCHAR},
+      pre_createtime = #{record.preCreatetime,jdbcType=TIMESTAMP},
+      pre_updatetime = #{record.preUpdatetime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pms.pojo.Preselection" >
+    update preselection
+    <set >
+      <if test="stuId != null" >
+        stu_id = #{stuId,jdbcType=INTEGER},
+      </if>
+      <if test="teacherId != null" >
+        teacher_id = #{teacherId,jdbcType=INTEGER},
+      </if>
+      <if test="preFlag != null" >
+        pre_flag = #{preFlag,jdbcType=INTEGER},
+      </if>
+      <if test="prePassFlag != null" >
+        pre_pass_flag = #{prePassFlag,jdbcType=INTEGER},
+      </if>
+      <if test="rejectReason != null" >
+        reject_reason = #{rejectReason,jdbcType=VARCHAR},
+      </if>
+      <if test="preComment != null" >
+        pre_comment = #{preComment,jdbcType=VARCHAR},
+      </if>
+      <if test="preCreatetime != null" >
+        pre_createtime = #{preCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="preUpdatetime != null" >
+        pre_updatetime = #{preUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where pre_id = #{preId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pms.pojo.Preselection" >
+    update preselection
+    set stu_id = #{stuId,jdbcType=INTEGER},
+      teacher_id = #{teacherId,jdbcType=INTEGER},
+      pre_flag = #{preFlag,jdbcType=INTEGER},
+      pre_pass_flag = #{prePassFlag,jdbcType=INTEGER},
+      reject_reason = #{rejectReason,jdbcType=VARCHAR},
+      pre_comment = #{preComment,jdbcType=VARCHAR},
+      pre_createtime = #{preCreatetime,jdbcType=TIMESTAMP},
+      pre_updatetime = #{preUpdatetime,jdbcType=TIMESTAMP}
+    where pre_id = #{preId,jdbcType=INTEGER}
+  </update>
+</mapper>

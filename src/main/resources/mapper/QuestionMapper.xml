@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pms.dao.QuestionMapper" >
+  <resultMap id="BaseResultMap" type="com.pms.pojo.Question" >
+    <id column="que_id" property="queId" jdbcType="INTEGER" />
+    <result column="course_id" property="courseId" jdbcType="INTEGER" />
+    <result column="que_name" property="queName" jdbcType="VARCHAR" />
+    <result column="que_a" property="queA" jdbcType="VARCHAR" />
+    <result column="que_b" property="queB" jdbcType="VARCHAR" />
+    <result column="que_c" property="queC" jdbcType="VARCHAR" />
+    <result column="que_d" property="queD" jdbcType="VARCHAR" />
+    <result column="que_answer" property="queAnswer" jdbcType="CHAR" />
+    <result column="que_score" property="queScore" jdbcType="INTEGER" />
+    <result column="que_comment" property="queComment" jdbcType="VARCHAR" />
+    <result column="que_createtime" property="queCreatetime" jdbcType="TIMESTAMP" />
+    <result column="que_updatetime" property="queUpdatetime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <select id="getRandomList" resultMap="BaseResultMap" parameterType="Integer" >
+    SELECT * FROM question
+    WHERE
+    course_id = #{courseId}
+    ORDER BY RAND() LIMIT 0,10;
+  </select>
+
+
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    que_id, course_id, que_name, que_a, que_b, que_c, que_d, que_answer, que_score, que_comment, 
+    que_createtime, que_updatetime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pms.pojo.QuestionExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from question
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from question
+    where que_id = #{queId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from question
+    where que_id = #{queId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pms.pojo.QuestionExample" >
+    delete from question
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pms.pojo.Question" >
+    insert into question (que_id, course_id, que_name, 
+      que_a, que_b, que_c, que_d, 
+      que_answer, que_score, que_comment, 
+      que_createtime, que_updatetime)
+    values (#{queId,jdbcType=INTEGER}, #{courseId,jdbcType=INTEGER}, #{queName,jdbcType=VARCHAR}, 
+      #{queA,jdbcType=VARCHAR}, #{queB,jdbcType=VARCHAR}, #{queC,jdbcType=VARCHAR}, #{queD,jdbcType=VARCHAR}, 
+      #{queAnswer,jdbcType=CHAR}, #{queScore,jdbcType=INTEGER}, #{queComment,jdbcType=VARCHAR}, 
+      #{queCreatetime,jdbcType=TIMESTAMP}, #{queUpdatetime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pms.pojo.Question" >
+    insert into question
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="queId != null" >
+        que_id,
+      </if>
+      <if test="courseId != null" >
+        course_id,
+      </if>
+      <if test="queName != null" >
+        que_name,
+      </if>
+      <if test="queA != null" >
+        que_a,
+      </if>
+      <if test="queB != null" >
+        que_b,
+      </if>
+      <if test="queC != null" >
+        que_c,
+      </if>
+      <if test="queD != null" >
+        que_d,
+      </if>
+      <if test="queAnswer != null" >
+        que_answer,
+      </if>
+      <if test="queScore != null" >
+        que_score,
+      </if>
+      <if test="queComment != null" >
+        que_comment,
+      </if>
+      <if test="queCreatetime != null" >
+        que_createtime,
+      </if>
+      <if test="queUpdatetime != null" >
+        que_updatetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="queId != null" >
+        #{queId,jdbcType=INTEGER},
+      </if>
+      <if test="courseId != null" >
+        #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="queName != null" >
+        #{queName,jdbcType=VARCHAR},
+      </if>
+      <if test="queA != null" >
+        #{queA,jdbcType=VARCHAR},
+      </if>
+      <if test="queB != null" >
+        #{queB,jdbcType=VARCHAR},
+      </if>
+      <if test="queC != null" >
+        #{queC,jdbcType=VARCHAR},
+      </if>
+      <if test="queD != null" >
+        #{queD,jdbcType=VARCHAR},
+      </if>
+      <if test="queAnswer != null" >
+        #{queAnswer,jdbcType=CHAR},
+      </if>
+      <if test="queScore != null" >
+        #{queScore,jdbcType=INTEGER},
+      </if>
+      <if test="queComment != null" >
+        #{queComment,jdbcType=VARCHAR},
+      </if>
+      <if test="queCreatetime != null" >
+        #{queCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="queUpdatetime != null" >
+        #{queUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pms.pojo.QuestionExample" resultType="java.lang.Integer" >
+    select count(*) from question
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update question
+    <set >
+      <if test="record.queId != null" >
+        que_id = #{record.queId,jdbcType=INTEGER},
+      </if>
+      <if test="record.courseId != null" >
+        course_id = #{record.courseId,jdbcType=INTEGER},
+      </if>
+      <if test="record.queName != null" >
+        que_name = #{record.queName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.queA != null" >
+        que_a = #{record.queA,jdbcType=VARCHAR},
+      </if>
+      <if test="record.queB != null" >
+        que_b = #{record.queB,jdbcType=VARCHAR},
+      </if>
+      <if test="record.queC != null" >
+        que_c = #{record.queC,jdbcType=VARCHAR},
+      </if>
+      <if test="record.queD != null" >
+        que_d = #{record.queD,jdbcType=VARCHAR},
+      </if>
+      <if test="record.queAnswer != null" >
+        que_answer = #{record.queAnswer,jdbcType=CHAR},
+      </if>
+      <if test="record.queScore != null" >
+        que_score = #{record.queScore,jdbcType=INTEGER},
+      </if>
+      <if test="record.queComment != null" >
+        que_comment = #{record.queComment,jdbcType=VARCHAR},
+      </if>
+      <if test="record.queCreatetime != null" >
+        que_createtime = #{record.queCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.queUpdatetime != null" >
+        que_updatetime = #{record.queUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update question
+    set que_id = #{record.queId,jdbcType=INTEGER},
+      course_id = #{record.courseId,jdbcType=INTEGER},
+      que_name = #{record.queName,jdbcType=VARCHAR},
+      que_a = #{record.queA,jdbcType=VARCHAR},
+      que_b = #{record.queB,jdbcType=VARCHAR},
+      que_c = #{record.queC,jdbcType=VARCHAR},
+      que_d = #{record.queD,jdbcType=VARCHAR},
+      que_answer = #{record.queAnswer,jdbcType=CHAR},
+      que_score = #{record.queScore,jdbcType=INTEGER},
+      que_comment = #{record.queComment,jdbcType=VARCHAR},
+      que_createtime = #{record.queCreatetime,jdbcType=TIMESTAMP},
+      que_updatetime = #{record.queUpdatetime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pms.pojo.Question" >
+    update question
+    <set >
+      <if test="courseId != null" >
+        course_id = #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="queName != null" >
+        que_name = #{queName,jdbcType=VARCHAR},
+      </if>
+      <if test="queA != null" >
+        que_a = #{queA,jdbcType=VARCHAR},
+      </if>
+      <if test="queB != null" >
+        que_b = #{queB,jdbcType=VARCHAR},
+      </if>
+      <if test="queC != null" >
+        que_c = #{queC,jdbcType=VARCHAR},
+      </if>
+      <if test="queD != null" >
+        que_d = #{queD,jdbcType=VARCHAR},
+      </if>
+      <if test="queAnswer != null" >
+        que_answer = #{queAnswer,jdbcType=CHAR},
+      </if>
+      <if test="queScore != null" >
+        que_score = #{queScore,jdbcType=INTEGER},
+      </if>
+      <if test="queComment != null" >
+        que_comment = #{queComment,jdbcType=VARCHAR},
+      </if>
+      <if test="queCreatetime != null" >
+        que_createtime = #{queCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="queUpdatetime != null" >
+        que_updatetime = #{queUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where que_id = #{queId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pms.pojo.Question" >
+    update question
+    set course_id = #{courseId,jdbcType=INTEGER},
+      que_name = #{queName,jdbcType=VARCHAR},
+      que_a = #{queA,jdbcType=VARCHAR},
+      que_b = #{queB,jdbcType=VARCHAR},
+      que_c = #{queC,jdbcType=VARCHAR},
+      que_d = #{queD,jdbcType=VARCHAR},
+      que_answer = #{queAnswer,jdbcType=CHAR},
+      que_score = #{queScore,jdbcType=INTEGER},
+      que_comment = #{queComment,jdbcType=VARCHAR},
+      que_createtime = #{queCreatetime,jdbcType=TIMESTAMP},
+      que_updatetime = #{queUpdatetime,jdbcType=TIMESTAMP}
+    where que_id = #{queId,jdbcType=INTEGER}
+  </update>
+</mapper>
